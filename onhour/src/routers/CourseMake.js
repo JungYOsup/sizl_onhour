@@ -1,12 +1,12 @@
 import React from "react";
 import Navigation from "../components/Navigation";
-function management() {
+function Course_make() {
   return (
     <div>
       <Navigation />
-      <div>매니지먼트</div>
+      <div>콜스메이커</div>
     </div>
   );
 }
 
-export default management;
+export default Course_make;

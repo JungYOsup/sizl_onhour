@@ -1,0 +1,8 @@
+#sidenavigation {
+  display: flex;
+  flex-direction: column;
+  padding: 100px 30px;
+}
+#sidenavigation a {
+  margin-bottom: 40px;
+}

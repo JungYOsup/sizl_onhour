@@ -1,0 +1,8 @@
+#contents_container {
+  margin: 100px 50px;
+}
+.Loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
