@@ -1,4 +1,4 @@
-.sinkmodify {
+.sinkmodify__main {
   display: flex;
 }
 
@@ -67,5 +67,23 @@
 .end__btn,
 .right__btns-one,
 .right__btns-zerothree img {
+  cursor: pointer;
+}
+
+.sinkmodify__footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.sinkmodify__footer button {
+  background: 0% 0% no-repeat padding-box padding-box rgb(255, 233, 74);
+  border: 0px;
+  width: 100px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
   cursor: pointer;
 }

@@ -1,5 +1,5 @@
 import React from "react";
-
+import YouTube from "react-youtube";
 function VideoView({
   url,
   showDropDown,
@@ -8,16 +8,43 @@ function VideoView({
   title,
   saveAndpostApi,
   categoryNames,
+  name,
+  showVideo,
+  inputText,
+  captions,
+  inputCaption,
+  setReady,
 }) {
+  let getTumbnail = "";
+
+  if (url.includes("&")) {
+    getTumbnail = url.substring(32, url.indexOf("&"));
+  } else {
+    getTumbnail = url.substring(32, url.length);
+  }
+
+  const opts = {
+    height: "170",
+    width: "400",
+  };
+
   return (
     <div>
       <div className="container__header">
         <div className="header__left">
           <div className="left__title">
             <span>영상주소</span>
-            <span>(수정할수없습니다)</span>
+            {name === "make" ? <span></span> : <span>(수정할수없습니다)</span>}
           </div>
-          <input value={url} readOnly className="left__input" />
+          {name === "make" ? (
+            <input
+              value={url}
+              className="left__input"
+              onChange={(e) => showVideo(e)}
+            />
+          ) : (
+            <input value={url} readOnly className="left__input" />
+          )}
         </div>
         <div className="header__right">
           <span className="right__title">카테고리</span>
@@ -75,18 +102,38 @@ function VideoView({
       </div>
       <div className="container__main">
         <p className="main__title">{youtubeTitle}</p>
-        <iframe
-          src={url.replace("watch?v=", "embed/")}
-          className="main__vedio"
-        ></iframe>
+
+        <YouTube videoId={getTumbnail} opts={opts} onReady={setReady} />
+        
       </div>
       <div className="container__footer">
         <span className="footer__title">수업제목</span>
-        <input value={title} readOnly className="footer__input" />
-        <p>
-          영어 문장을 입력하면 자동으로 문장단위로 끝어서 표시되고, 번역기
-          추가됩니다. 입력칸을 클릭하여 직접 수정할 수도 있습니다.
-        </p>
+        {name === "make" ? (
+          <div>
+            <input
+              value={title}
+              className="footer__input"
+              onChange={inputText}
+            />
+            <div>
+              <span>영어 가사/캡션</span>
+              <p>마침표/개행을 기준으로해서 자동으로 문장마다 끊어집니다.</p>
+              <input
+                className="footer__caption"
+                value={captions}
+                onChange={(e) => inputCaption(e)}
+              ></input>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <input value={title} readOnly className="footer__input" />
+            <p>
+              영어 문장을 입력하면 자동으로 문장단위로 끝어서 표시되고, 번역기
+              추가됩니다. 입력칸을 클릭하여 직접 수정할 수도 있습니다.
+            </p>
+          </div>
+        )}
         <div className="footer__saveBtn">
           <button onClick={saveAndpostApi}>저장하고 다음으로</button>
         </div>

@@ -23,19 +23,11 @@ function ContentsModify({
       </div>
       <div className="contentsmodify__main">
         <div className="main__left">
-          {/* 적었다가 땟을때 작동을 하려면 onBlur를 사용 */}
           {paragraphs.map((paragraph, index) => (
             <div key={index} className="left__list">
               <textarea
                 className="left__textarea"
-                onBlur={() =>
-                  TranslationApi(
-                    //   window.event
-                    // Window 객체의 event 속성은 웹 사이트의 코드가 현재 처리 중인 Event를 반환합니다. (우리가 아는 event를 반환)
-                    window.event,
-                    paragraph.pk
-                  )
-                }
+                onBlur={() => TranslationApi(window.event, paragraph.pk)}
                 value={paragraph.eng}
                 onChange={() => chageTextarea(window.event, paragraph.pk, "en")}
               ></textarea>

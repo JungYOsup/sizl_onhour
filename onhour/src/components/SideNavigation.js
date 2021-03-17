@@ -4,6 +4,7 @@ import "../assets/css/sidenavigation.css";
 function SideNavigation() {
   return (
     <div id="sidenavigation">
+      <Link to="/admin/Edit/mediatool_manage">콘텐츠 만들기</Link>
       <Link to="/admin/Edit/content_manage">콘텐츠관리</Link>
       <Link to="/admin/Edit/category_manage">카테고리 관리</Link>
       <Link to="/admin/PlayList/play_list_manage">풀레이리스트 관리</Link>

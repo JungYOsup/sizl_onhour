@@ -1,51 +1,27 @@
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import React, { useEffect, useState, version } from "react";
 import SinkView from "../../../../components/SinkView";
-import "../../../../assets/css/modifies/sinkmodify.css";
-function SinkModify({ contents, history }) {
+function SinkMake({ history, contents, url, paragraphs }) {
+  let inputObj = paragraphs.map(() => ({
+    startValue: 0,
+    endValue: 0,
+  }));
+
   const [sinkes, setSinkes] = useState({
-    url: "",
-    paragraphs: [],
+    url,
+    paragraphs,
     //[{dub:"",end:"",eng:"",kr:"'",pk:"",start:""},..]
-    times: [],
+    times: inputObj,
     // [{startValue : 0 , endValue : 0 }, {startValue : 0 , endValue : 0},...]
   });
 
   const [youtube, setYoutube] = useState();
 
-  const { url, paragraphs, times } = sinkes;
+  const { times } = sinkes;
 
   console.log(paragraphs, "제일중요");
 
   //1. rendering 이후 getAPi를 가져와서 url 과 paragraphs를 채워 넣는다.
-  const getApi = async () => {
-    const {
-      data: { data },
-    } = await axios.get(
-      `https://1hour.school/api/v1/contents/load/sync/${contents}`,
-      {
-        headers: {
-          Authorization: sessionStorage.getItem("adminToken"),
-        },
-      }
-    );
-
-    const getURL = data.url;
-    const getParagraphs = data.paragraphs;
-
-    // 받아온 데이터 만큼 time을 넣어준다.
-    let inputObj = getParagraphs.map(() => ({
-      startValue: 0,
-      endValue: 0,
-    }));
-
-    setSinkes({
-      ...sinkes,
-      url: getURL,
-      paragraphs: getParagraphs,
-      times: inputObj,
-    });
-  };
 
   const inputValue = (e, index) => {
     const target = Number(e.target.value);
@@ -208,7 +184,7 @@ function SinkModify({ contents, history }) {
   const saveAndpostApi = async () => {
     await axios
       .post(
-        "https://1hour.school/api/v1/contents/update/sync",
+        "https://1hour.school/api/v1/contents/create/sync",
         {
           contents,
           sentences: paragraphs,
@@ -220,23 +196,26 @@ function SinkModify({ contents, history }) {
         }
       )
       .then((res) => {
-        console.log(res);
+        const {
+          data: { data },
+        } = res;
+
+        console.log(data.contents);
+        console.log(data.paragraphs);
+
         history.push({
-          pathname: "/admin/Edit/content_edit",
+          pathname: "/admin/Edit/mediatool_manage",
           state: {
-            contents,
+            contents: data.contents,
+            paragraphs: data.paragraphs,
             page: 4,
           },
         });
       });
   };
 
-  useEffect(getApi, []);
-
   return (
     <div>
-      {/* *엄청중요* 지금의 이 방법은 redering될때 시간이 너무 오래 걸린다는 문제가 있다. redering을 빨리하고 데이터를 가져오는게 좋을것 같다.
-      그래서 함수나 데이터 가져오는거는 제일 부모에서 해주는게 좋을것 같은데?? */}
       <SinkView
         url={url}
         paragraphs={paragraphs}
@@ -254,4 +233,4 @@ function SinkModify({ contents, history }) {
   );
 }
 
-export default SinkModify;
+export default SinkMake;

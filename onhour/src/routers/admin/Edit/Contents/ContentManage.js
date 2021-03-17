@@ -18,7 +18,7 @@ import ContentsLists from "./ContentsLists";
 
 // 3. category의 번호를 확인해보자.
 
-function ContentManage() {
+function ContentManage({ history }) {
   // data.data.
   const [list, setList] = useState({
     navs: [],
@@ -44,7 +44,7 @@ function ContentManage() {
 
   return (
     <div>
-      <ContentsLists navs={navs} />
+      <ContentsLists navs={navs} history={history} />
     </div>
   );
 }

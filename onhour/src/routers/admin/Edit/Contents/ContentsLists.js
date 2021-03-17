@@ -23,7 +23,7 @@ import "../../../../assets/css/contents/contentslists.css";
 
 // navs 에는 category 와 title이 있던것 같은데
 
-function ContentsLists({ navs }) {
+function ContentsLists({ navs, history }) {
   const [contents, setContents] = useState({
     isLoading: true,
     category: -1,
@@ -38,11 +38,11 @@ function ContentsLists({ navs }) {
   // 매개변수로 전달할때는 그대로가 아닌 이름 바꿔서
   // 카테고리를 바꾸는 함수
   const changeNav = (category, page) => {
-    setContents({ ...contents, isLoading : true,category, page });
+    setContents({ ...contents, isLoading: true, category, page });
   };
   // 페이지를 바꾸는 함수
   const changePage = (page) => {
-    setContents({ ...contents, isLoading : true,page });
+    setContents({ ...contents, isLoading: true, page });
   };
 
   // data.data.rows
@@ -86,7 +86,7 @@ function ContentsLists({ navs }) {
           <span className="Loader__text">isLoading...</span>
         </div>
       ) : (
-        <ContentsList rows={rows} getApi={getApi} />
+        <ContentsList rows={rows} getApi={getApi} history={history} />
       )}
 
       <Pagination total={total} changePage={changePage} />

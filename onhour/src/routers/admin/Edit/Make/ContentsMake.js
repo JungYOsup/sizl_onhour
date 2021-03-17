@@ -1,68 +1,17 @@
-// 2021-01-04
-// 1.
-// find는 값을 리턴해주는반면 , filter은 일치하는 모든 값을 리턴해주기에 배열로 리턴해준다.
-
-// translation 하는방법
-// 배운점 : 고차함수와 , 배열에서 자주사용하는 함수들이 얼마나 중요한지 깨닫게 됨(splice , indexOf 등)
-
-// 2.
-// input과 textarea에서 자식요소에 값을 쓰는것은 위험하다. ex) <input>안녕</input> (x) , <input value="안녕"></input>
-// react에서 textarea는 value 라는 prop를 사용해야지만 업데이트 할때 값도 업데이트 되더라
-// 하지만 <textarea>값<textarea> 처럼 textarea의 자식요소에 잇는 값는들 업데이트를 해도 값이 변경이 안된다.
-// 그래서 일반적으로 textarea 자식요소로 값을 쓸경우 쓰지말라고 오류가 뜬다.
-
-// 3.
-// 그러면 어떻게 해야할까?? textarea에 value를 정해지면 수정이 안되고, child에 값을 넣을경우에는 업데이트가 안되던데..?
-
-// 4.
-// textarea의 동작방식을 보면 onchange가 일어나고 그 변화한 값들이 setState에 올라간뒤 다시 뿌려줘야지만 제대로 값이 변화한다.
-// 원리를 잘 알아보자
-
-//  history
-// history는 stack으로 쌓기 때문에 페이지 이동을 할때는 어딜 걸처서 가면 안된다 .
-// 예를들어 1->2->3 페이지를 가고 싶은데 1->부모->2->부모->3 로 컴포넌트가 구성되어있으면  2에서 history.goback()를 하면 부모로 간다.
-// 따라서 history를 사용하려면 1->2->3 페이지 순으로 이동하게끔 짜야한다.
-
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "../../../../assets/css/modifies/contentsmodify.css";
-import ContentsView from "../../../../components/ContentsView";
-// 변역을 바로바로 어떻게 해줘야할까 ?? 궁금하네..
+import axios from "axios";
+import ContentsView from "../../.././../components/ContentsView";
 
-function ContentsModify({ contents, history }) {
+function ContentsMakes({ contents, history, paragraphs }) {
   const [modifies_two, setModifies_two] = useState({
-    contents: contents, //컨텐츠 pk
-    paragraphs: [],
+    contents, //컨텐츠 pk
+    paragraphs,
   });
-
-  const { paragraphs } = modifies_two;
 
   console.log(contents, "content");
   console.log(paragraphs);
 
-  // 1.컨텐츠 pk에 의해 문장 불러오기 API를 가져오는 함수
-
-  const getApi = async () => {
-    const {
-      data: { data },
-    } = await axios.get(
-      `https://1hour.school/api/v1/contents/load/sentence/${contents}`,
-      {
-        headers: {
-          Authorization: sessionStorage.getItem("adminToken"),
-        },
-      }
-    );
-
-    const { paragraphs } = data;
-
-    console.log(paragraphs); // [{eng:"Test",kor:"테스트",pk:1062},{eng:"One",kor:"하나",pk:1063},{eng:"TWo",kor:"둘",pk:1064}]
-
-    setModifies_two({ ...modifies_two, paragraphs });
-  };
-
-  // 2.Textarea에 값 입력시 변경하는 함수
+  // 1.Textarea에 값 입력시 변경하는 함수
   const chageTextarea = (e, pk, lan) => {
     console.log(pk);
     const changeValue = e.target.value;
@@ -85,7 +34,7 @@ function ContentsModify({ contents, history }) {
     setModifies_two({ ...contents, paragraphs });
   };
 
-  // 3.입력된 값을 번역하여 바꿔주는 API
+  // 2.입력된 값을 번역하여 바꿔주는 API
   const TranslationApi = async (e, pk) => {
     let inputEng = e.target.value;
     const {
@@ -178,7 +127,7 @@ function ContentsModify({ contents, history }) {
 
     await axios
       .post(
-        "https://1hour.school/api/v1/contents/update/sentence",
+        "https://1hour.school/api/v1/contents/create/sentence",
         {
           contents,
           sentences: changeParagraphs,
@@ -190,21 +139,26 @@ function ContentsModify({ contents, history }) {
         }
       )
       .then((res) => {
-        console.log(res);
+        const {
+          data: { data },
+        } = res;
+
+        console.log(data);
+
         history.push({
-          pathname: "/admin/Edit/content_edit",
+          pathname: "/admin/Edit/mediatool_manage",
           state: {
-            contents,
+            contents: data.contents,
             page: 3,
+            paragraphs: data.paragraphs,
+            url: data.url,
           },
         });
       });
   };
 
-  useEffect(getApi, []);
-
   return (
-    <div className="contentsmodify">
+    <div className="contentsmake">
       <ContentsView
         paragraphs={paragraphs}
         addLists={addLists}
@@ -216,5 +170,4 @@ function ContentsModify({ contents, history }) {
     </div>
   );
 }
-
-export default ContentsModify;
+export default ContentsMakes;

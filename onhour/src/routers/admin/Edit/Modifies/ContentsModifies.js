@@ -4,6 +4,8 @@ import ContentsModify from "./ContentsModify";
 import VideoModify from "./VideoModify";
 import "../../../../assets/css/modifies/modifies.css";
 import SinkModify from "./SinkModify";
+import WordModify from "./WordModify";
+import ProblemModify from "./ProblemModify";
 
 function ContentsModifies({ location, history }) {
   const page = location.state.page;
@@ -19,6 +21,12 @@ function ContentsModifies({ location, history }) {
       ) : null}
       {page === 3 ? (
         <SinkModify contents={location.state.contents} history={history} />
+      ) : null}
+      {page === 4 ? (
+        <WordModify contents={location.state.contents} history={history} />
+      ) : null}
+      {page === 5 ? (
+        <ProblemModify contents={location.state.contents} history={history} />
       ) : null}
     </section>
   );

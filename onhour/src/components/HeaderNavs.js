@@ -6,6 +6,7 @@ import PlayListHeader from "../routers/admin/PlayList/PlayListHeader";
 import BannerHeader from "../routers/admin/Banner/BannerHeader";
 import "../assets/css/headernavs.css";
 import ModifyHeader from "../routers/admin/Edit/Modifies/ModifyHeader";
+import MakeHeader from "../routers/admin/Edit/Make/MakeHeader";
 
 // 공통으로 쓰고 싶다..
 // 이렇게 하자 .. 컴포넌트를 만들돼 데이터에서 받아올수 없는 것들은
@@ -23,6 +24,7 @@ function HeaderNavs({ navs, changeNav, name }) {
       {name === "banner" ? <BannerHeader /> : null}
       {name === "member" ? <MemberHeader /> : null}
       {name === "modify" ? <ModifyHeader /> : null}
+      {name === "make" ? <MakeHeader /> : null}
     </div>
   );
 }
